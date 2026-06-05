@@ -1,0 +1,17 @@
+name: Deploy to server
+on: push
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ARTIFACT_HOST }}
+          username: ${{ secrets.ARTIFACT_USERNAME }}
+          key: ${{ secrets.ARTIFACT_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.ARTIFACT_USERNAME }}/snooker-app
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -f
