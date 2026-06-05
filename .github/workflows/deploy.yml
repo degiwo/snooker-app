@@ -24,6 +24,13 @@ jobs:
           key: ${{ secrets.ARTIFACT_SSH_KEY }}
           script: |
             cd /home/${{ secrets.ARTIFACT_USERNAME }}/snooker-app
+            
+            # Check if .env file exists, if not exit with error
+            if [ ! -f .env ]; then
+              echo ".env file not found! Please create it on the server before deploying."
+              exit 1
+            fi
+            
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
             docker image prune -f
