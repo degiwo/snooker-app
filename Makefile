@@ -1,7 +1,7 @@
 .PHONY: backend-check frontend-check
 
 backend-check:
-	cd apps/backend && uv run ruff check .
+	cd apps/backend && uv run ruff check --select I --fix .
 	cd apps/backend && uv run ruff format --check .
 	cd apps/backend && uv run ty check .
 
