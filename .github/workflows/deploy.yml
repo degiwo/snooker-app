@@ -1,0 +1,36 @@
+name: Deploy to server
+on: workflow_dispatch
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Copy docker-compose.prod.yml to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.ARTIFACT_HOST }}
+          username: ${{ secrets.ARTIFACT_USERNAME }}
+          key: ${{ secrets.ARTIFACT_SSH_KEY }}
+          source: docker-compose.prod.yml
+          target: /home/${{ secrets.ARTIFACT_USERNAME }}/snooker-app/
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ARTIFACT_HOST }}
+          username: ${{ secrets.ARTIFACT_USERNAME }}
+          key: ${{ secrets.ARTIFACT_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.ARTIFACT_USERNAME }}/snooker-app
+            
+            # Check if .env file exists, if not exit with error
+            if [ ! -f .env ]; then
+              echo ".env file not found! Please create it on the server before deploying."
+              exit 1
+            fi
+            
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            docker image prune -f
