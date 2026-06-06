@@ -2,10 +2,10 @@ import json
 
 
 def get_results():
-    with open("results.json", "r") as f:
-        return json.load(f)
+    with open("/app/data/results.jsonl", "r") as f:
+        return [json.loads(line) for line in f]
 
 
 def store_result(result: dict):
-    with open("results.json", "w") as f:
-        json.dump(result, f)
+    with open("/app/data/results.jsonl", "a") as f:
+        f.write(json.dumps(result) + "\n")
