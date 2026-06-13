@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from snooker_backend.results import store_result, get_results
+from snooker_backend.models import Result
 
 app = FastAPI()
 
@@ -17,7 +18,7 @@ def read_results():
 
 
 @app.post("/results")
-def create_result(result: dict):
+def create_result(result: Result):
     store_result(result)
 
 
