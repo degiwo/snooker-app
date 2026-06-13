@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from app.results import store_result, get_results
+from snooker_backend.results import store_result, get_results
 
 app = FastAPI()
 
