@@ -1,10 +1,24 @@
+import os
+
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from snooker_backend.results import store_result, get_results
 from snooker_backend.models import Result
+from snooker_backend.results import get_results, store_result
+
+raw_origins = os.getenv("CORS_ORIGINS", "http://localhost:8080")
+origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")

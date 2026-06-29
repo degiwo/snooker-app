@@ -1,5 +1,5 @@
-import { provideHttpClient } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 
@@ -12,8 +12,8 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('Snooker App');
 
-  backend_url = 'http://localhost:8000';
-  client = provideHttpClient();
+  private readonly http = inject(HttpClient);
+  private readonly backendUrl = 'http://localhost:8000';
 
   form = new FormGroup({
     opponent: new FormControl(''),
@@ -22,6 +22,19 @@ export class App {
   });
 
   submit() {
-    console.log(this.form.value);
+    const now = new Date();
+    const payload = {
+      id: now.getTime(),
+      created_at: now.toISOString(),
+      date: now.toISOString().split('T')[0],
+      opponent_name: this.form.value.opponent ?? '',
+      score: this.form.value.player_score ?? 0,
+      opponent_score: this.form.value.opponent_score ?? 0,
+      high_break: 0,
+    };
+    this.http.post(`${this.backendUrl}/results`, payload).subscribe({
+      next: () => console.log('Result saved'),
+      error: (err) => console.error('Failed to save result', err),
+    });
   }
 }
