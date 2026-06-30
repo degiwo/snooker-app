@@ -3,6 +3,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 
+import { environment } from '../environments/environment';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, ReactiveFormsModule],
@@ -13,7 +15,7 @@ export class App {
   protected readonly title = signal('Snooker App');
 
   private readonly http = inject(HttpClient);
-  private readonly backendUrl = 'http://localhost:8000';
+  private readonly backendUrl = environment.backendUrl;
 
   form = new FormGroup({
     opponent: new FormControl(''),
