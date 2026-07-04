@@ -1,14 +1,8 @@
-import os
-
 import uvicorn
 from fastapi import FastAPI
 
 from snooker_backend.models import Result
 from snooker_backend.results import get_results, store_result
-
-raw_origins = os.getenv("CORS_ORIGINS", "http://localhost:8080")
-origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
-
 
 app = FastAPI()
 
