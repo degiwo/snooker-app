@@ -16,8 +16,6 @@ services:
     restart: unless-stopped
     environment:
       CORS_ORIGINS: ${CORS_ORIGINS}
-    ports:
-      - 8000:8000
     volumes:
       - ./data:/app/data
 
