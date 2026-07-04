@@ -12,8 +12,6 @@ import { environment } from '../environments/environment';
   styleUrl: './app.component.css',
 })
 export class App {
-  protected readonly title = signal('Snooker App');
-
   private readonly http = inject(HttpClient);
   private readonly backendUrl = environment.backendUrl;
 
