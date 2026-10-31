@@ -1,0 +1,20 @@
+# App on the platform
+# Replace first the placeholders <...>
+
+services:
+  app:
+    image: ghcr.io/<owner>/<app>:latest
+    restart: unless-stopped
+    env_file: .env
+    # volumes:
+    #   - ./data:/data
+    labels:
+      caddy: <app>.${APPS_DOMAIN:?}
+      caddy.import: authelia
+      caddy.reverse_proxy: "{{upstreams 80}}"
+    networks:
+      - platform
+
+networks:
+  platform:
+    external: true

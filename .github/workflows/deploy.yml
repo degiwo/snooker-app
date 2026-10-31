@@ -1,0 +1,60 @@
+# Build the image, push it to GHCR, deploy on the server
+# on every push to main.
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency: deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Names
+        run: |
+          repo="${GITHUB_REPOSITORY,,}"
+          echo "APP=${repo#*/}" >> "$GITHUB_ENV"
+          echo "IMAGE=ghcr.io/$repo" >> "$GITHUB_ENV"
+      
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+      
+      - name: Deploy
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          scp compose.yml "deploy@$HOST:/srv/apps/$APP/compose.yml"
+          echo "$TOKEN" | ssh "deploy@$HOST" "cd /srv/apps/$APP \
+            && docker login ghcr.io -u '$GITHUB_ACTOR' --password-stdin \
+            && docker compose pull \
+            && docker compose up -d \
+            && docker logout ghcr.io"
