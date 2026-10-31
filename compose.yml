@@ -1,15 +1,14 @@
 # App on the platform
-# Replace first the placeholders <...>
 
 services:
   app:
-    image: ghcr.io/<owner>/<app>:latest
+    image: ghcr.io/degiwo/snooker-app:latest
     restart: unless-stopped
     env_file: .env
     # volumes:
     #   - ./data:/data
     labels:
-      caddy: <app>.${APPS_DOMAIN:?}
+      caddy: snooker.${APPS_DOMAIN:?}
       caddy.import: authelia
       caddy.reverse_proxy: "{{upstreams 80}}"
     networks:
