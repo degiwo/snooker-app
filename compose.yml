@@ -12,13 +12,14 @@ services:
       caddy.import: authelia
       caddy.reverse_proxy: "{{upstreams 80}}"
     networks:
+      - default
       - platform
 
   backend:
     image: ghcr.io/degiwo/snooker-app-backend:latest
     restart: unless-stopped
     networks:
-      - platform
+      - default  # unreachable for other apps on the server
 
 networks:
   platform:

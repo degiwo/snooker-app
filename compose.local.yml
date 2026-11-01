@@ -2,8 +2,6 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    container_name: frontend
     restart: unless-stopped
     ports:
       - 4200:80
@@ -11,6 +9,4 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
-    container_name: backend
     restart: unless-stopped
