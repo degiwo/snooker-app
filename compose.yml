@@ -1,8 +1,8 @@
 # App on the platform
 
 services:
-  app:
-    image: ghcr.io/degiwo/snooker-app:latest
+  frontend:
+    image: ghcr.io/degiwo/snooker-app-frontend:latest
     restart: unless-stopped
     env_file: .env
     # volumes:
@@ -11,6 +11,12 @@ services:
       caddy: snooker.${APPS_DOMAIN:?}
       caddy.import: authelia
       caddy.reverse_proxy: "{{upstreams 80}}"
+    networks:
+      - platform
+
+  backend:
+    image: ghcr.io/degiwo/snooker-app-backend:latest
+    restart: unless-stopped
     networks:
       - platform
 

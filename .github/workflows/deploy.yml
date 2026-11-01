@@ -33,14 +33,26 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Build and push
+      - name: Build and push frontend
         uses: docker/build-push-action@v6
         with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
-      
+            ${{ env.IMAGE }}-frontend:latest
+            ${{ env.IMAGE }}-frontend:${{ github.sha }}
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE }}-backend:latest
+            ${{ env.IMAGE }}-backend:${{ github.sha }}
+
       - name: Deploy
         env:
           HOST: ${{ secrets.DEPLOY_HOST }}
