@@ -5,26 +5,38 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Commands
 
+### Install dependencies
+
+```sh
+npm install
+```
+
+### Lint and format
+
+```sh
+npm run format
+```
+
 ### Development server
 
 ```sh
-ng serve
+npm run start
 ```
 
 ### Generate new component
 
 ```sh
-ng generate component component-name
+npx ng generate component component-name
 ```
 
 ### Building
 
 ```sh
-ng build
+npm run build
 ```
 
 ### Running unit tests
 
 ```sh
-ng test
+npm run test
 ```
