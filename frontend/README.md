@@ -15,6 +15,7 @@ npm install
 
 ```sh
 npm run format
+npm run lint
 ```
 
 ### Development server
