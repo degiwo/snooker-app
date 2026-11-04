@@ -12,10 +12,13 @@ docker compose -f compose.local.yml up --build
 
 ```sh
 cd backend
+uv sync
 uv run uvicorn snooker_backend.main:app --reload
 ```
 
 ```sh
 cd frontend
+nvm use
+npm install
 npm start
 ```
