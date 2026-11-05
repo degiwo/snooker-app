@@ -22,3 +22,11 @@ nvm use
 npm install
 npm start
 ```
+
+## Git hooks
+
+```sh
+# The eslint and prettier hooks use versions from frontend,
+# so run `npm install` in `frontend/` first.
+prek run --all-files
+```

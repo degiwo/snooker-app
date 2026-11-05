@@ -19,7 +19,7 @@ services:
     image: ghcr.io/degiwo/snooker-app-backend:latest
     restart: unless-stopped
     networks:
-      - default  # unreachable for other apps on the server
+      - default # unreachable for other apps on the server
 
 networks:
   platform:

@@ -7,8 +7,8 @@ Initialized with `uv init backend --app --package --name snooker_backend --pytho
 ### Lint and format
 
 ```sh
-uv run ruff format
 uv run ruff check --fix
+uv run ruff format
 ```
 
 ### Run backend
