@@ -1,4 +1,4 @@
-# CHeck backend and frontend on every pull request and push to main.
+# Check backend and frontend on every pull request and push to main.
 # Build the images, push them to GHCR, deploy on the server
 # on every push to main.
 name: ci
