@@ -30,3 +30,8 @@ npm start
 # so run `npm install` in `frontend/` first.
 prek run --all-files
 ```
+
+## CI/CD
+
+`.github/workflows/ci.yml`: A push to `main` (or a manual run)
+deploys on the server, but only if all checks pass.
