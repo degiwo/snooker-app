@@ -1,3 +1,61 @@
 .shell {
   display: grid;
+  grid-template:
+    'header' auto
+    'main' 1fr
+    'nav' auto
+    / 1fr;
+  min-height: 100dvh;
+}
+
+.header {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 0
+    max(16px, env(safe-area-inset-left));
+  background: var(--mat-sys-surface);
+
+  h1 {
+    margin: 0;
+    font: var(--mat-sys-title-large);
+  }
+}
+
+.content {
+  grid-area: main;
+  padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left));
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.nav {
+  grid-area: nav;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--mat-sys-corner-small);
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  font: var(--mat-sys-label-large);
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
 }

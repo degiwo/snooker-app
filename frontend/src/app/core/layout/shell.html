@@ -3,6 +3,7 @@
   <header class="header">
     <h1>{{ pageTitle() }}</h1>
   </header>
+  <app-nav class="nav" [items]="navItems" />
 
   <main #main class="content" tabindex="-1">
     <router-outlet />
