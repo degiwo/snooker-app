@@ -34,3 +34,44 @@ a {
     font-weight: 600;
   }
 }
+
+@media (min-width: 600px) {
+  :host {
+    height: 100%;
+  }
+
+  ul {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0 0 env(safe-area-inset-left);
+  }
+
+  a {
+    padding: 8px 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  ul {
+    gap: 0;
+    padding-inline: 12px;
+  }
+
+  a {
+    flex-direction: row;
+    gap: 12px;
+    height: 56px;
+    padding: 0 16px;
+    border-radius: var(--mat-sys-corner-full);
+    font: var(--mat-sys-label-large);
+
+    &:hover {
+      background: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+    }
+
+    &.active {
+      background: var(--mat-sys-secondary-container);
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+}

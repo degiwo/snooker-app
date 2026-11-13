@@ -59,3 +59,30 @@
     transform: none;
   }
 }
+
+@media (min-width: 600px) {
+  .shell {
+    grid-template:
+      'nav header' auto
+      'nav main' 1fr
+      / 80px 1fr;
+  }
+
+  .nav {
+    align-self: start;
+    top: 0;
+    bottom: auto;
+    height: 100dvh;
+  }
+
+  .header,
+  .content {
+    padding-inline: 24px max(24px, env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 1200px) {
+  .shell {
+    grid-template-columns: 280px 1fr;
+  }
+}
