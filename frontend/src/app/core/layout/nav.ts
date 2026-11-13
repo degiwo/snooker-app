@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavItem } from '../navigation/nav-items';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, MatIcon],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

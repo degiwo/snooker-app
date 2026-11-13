@@ -7,7 +7,11 @@
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
           [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+          #rla="routerLinkActive"
         >
+          <span class="indicator">
+            <mat-icon [svgIcon]="rla.isActive ? item.icon + '-fill' : item.icon" />
+          </span>
           <span class="label">{{ item.label }}</span>
         </a>
       </li>
