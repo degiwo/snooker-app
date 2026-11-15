@@ -2,6 +2,7 @@
   <ul>
     @for (item of items(); track item.path) {
       <li>
+        <!-- exact for "/": otherwise Home would match every URL as prefix -->
         <a
           [routerLink]="item.path"
           routerLinkActive="active"
