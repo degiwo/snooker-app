@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
-import { provideRouter, TitleStrategy } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { APP_NAME, AppTitleStrategy } from './title-strategy';
+import { AppTitleStrategy, provideAppTitle } from './title-strategy';
 
 @Component({ template: '' })
 class Dummy {}
@@ -16,8 +16,7 @@ describe('AppTitleStrategy', () => {
           { path: 'with-title', title: 'Page', component: Dummy },
           { path: 'without-title', component: Dummy },
         ]),
-        { provide: APP_NAME, useValue: 'App' },
-        { provide: TitleStrategy, useExisting: AppTitleStrategy },
+        provideAppTitle('App'),
       ],
     });
   });

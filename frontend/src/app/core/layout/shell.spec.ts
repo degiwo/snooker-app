@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideRouter, TitleStrategy } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { APP_NAME, AppTitleStrategy } from '../navigation/title-strategy';
+import { provideAppTitle } from '../navigation/title-strategy';
 import { stubIcons } from '../../../testing/icons';
 import { Shell } from './shell';
 
@@ -25,8 +25,7 @@ describe('Shell', () => {
             ],
           },
         ]),
-        { provide: APP_NAME, useValue: 'App' },
-        { provide: TitleStrategy, useExisting: AppTitleStrategy },
+        provideAppTitle('App'),
         provideHttpClient(),
         provideHttpClientTesting(),
       ],

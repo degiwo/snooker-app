@@ -1,8 +1,15 @@
-import { Injectable, InjectionToken, inject, signal } from '@angular/core';
+import {
+  EnvironmentProviders,
+  Injectable,
+  InjectionToken,
+  inject,
+  makeEnvironmentProviders,
+  signal,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 
-export const APP_NAME = new InjectionToken<string>('APP_NAME');
+const APP_NAME = new InjectionToken<string>('APP_NAME');
 
 @Injectable({ providedIn: 'root' })
 export class AppTitleStrategy extends TitleStrategy {
@@ -17,4 +24,12 @@ export class AppTitleStrategy extends TitleStrategy {
     this._pageTitle.set(page);
     this.documentTitle.setTitle(page ? `${page} | ${this.appName}` : this.appName);
   }
+}
+
+export function provideAppTitle(appName: string): EnvironmentProviders {
+  return makeEnvironmentProviders([
+    { provide: APP_NAME, useValue: appName },
+    // useExisting instead of useClass: router and Shell must share the same instance
+    { provide: TitleStrategy, useExisting: AppTitleStrategy },
+  ]);
 }
