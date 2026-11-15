@@ -1,3 +1,5 @@
+@use 'breakpoints' as bp;
+
 :host {
   display: block;
   background: var(--mat-sys-surface-container);
@@ -55,7 +57,7 @@ a {
 }
 
 // Navigation rail
-@media (min-width: 600px) {
+@include bp.medium {
   ul {
     flex-direction: column;
     gap: 12px;
@@ -68,7 +70,7 @@ a {
 }
 
 // Drawer
-@media (min-width: 1200px) {
+@include bp.large {
   ul {
     gap: 0;
     padding-inline: 12px;

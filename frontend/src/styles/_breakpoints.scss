@@ -1,0 +1,15 @@
+// Layout breakpoints: names follow Material 3
+$medium: 600px; // navigation rail
+$large: 1200px; // navigation drawer
+
+@mixin medium {
+  @media (min-width: $medium) {
+    @content;
+  }
+}
+
+@mixin large {
+  @media (min-width: $large) {
+    @content;
+  }
+}
