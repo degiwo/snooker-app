@@ -1,0 +1,107 @@
+@use 'breakpoints' as bp;
+
+:host {
+  display: block;
+  background: var(--mat-sys-surface-container);
+}
+
+ul {
+  display: flex;
+  margin: 0;
+  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  list-style: none;
+}
+
+li {
+  flex: 1;
+}
+
+a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 0 16px;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-medium);
+  text-decoration: none;
+  border-radius: var(--mat-sys-corner-medium);
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: -2px;
+  }
+
+  &:hover .indicator {
+    background: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+  }
+
+  &.active {
+    color: var(--mat-sys-on-surface);
+    font-weight: 600;
+
+    .indicator {
+      background: var(--mat-sys-secondary-container);
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+}
+
+.indicator {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 32px;
+  border-radius: var(--mat-sys-corner-full);
+  transition: background-color 150ms;
+}
+
+// Navigation rail
+@include bp.medium {
+  ul {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0 0 env(safe-area-inset-left);
+  }
+
+  a {
+    padding: 8px 0;
+  }
+}
+
+// Drawer
+@include bp.large {
+  ul {
+    gap: 0;
+    padding-inline: 12px;
+  }
+
+  a {
+    flex-direction: row;
+    gap: 12px;
+    height: 56px;
+    padding: 0 16px;
+    border-radius: var(--mat-sys-corner-full);
+    font: var(--mat-sys-label-large);
+    transition: background-color 150ms;
+
+    &:hover {
+      background: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+    }
+
+    &.active {
+      background: var(--mat-sys-secondary-container);
+      color: var(--mat-sys-on-secondary-container);
+    }
+
+    &:hover .indicator,
+    &.active .indicator {
+      background: transparent;
+    }
+  }
+
+  .indicator {
+    width: auto;
+    height: auto;
+  }
+}

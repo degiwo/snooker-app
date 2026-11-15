@@ -1,0 +1,21 @@
+<nav aria-label="Navigation">
+  <ul>
+    @for (item of items(); track item.path) {
+      <li>
+        <!-- exact for "/": otherwise Home would match every URL as prefix -->
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+          [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+          #rla="routerLinkActive"
+        >
+          <span class="indicator">
+            <mat-icon [svgIcon]="rla.isActive ? item.icon + '-fill' : item.icon" />
+          </span>
+          <span class="label">{{ item.label }}</span>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
