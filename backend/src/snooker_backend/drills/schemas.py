@@ -8,7 +8,7 @@ class Category(StrEnum):
     BREAK_BUILDING = "break_building"
     LONG_POTTING = "long_potting"
     REST = "rest"
-    SAFETY = "SAFTEY"
+    SAFETY = "safety"
 
 
 class DrillBase(BaseModel):
