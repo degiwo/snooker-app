@@ -1,21 +1,34 @@
 from datetime import datetime
+from enum import StrEnum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
-class DrillCreate(BaseModel):
+class Category(StrEnum):
+    BREAK_BUILDING = "break_building"
+    LONG_POTTING = "long_potting"
+    REST = "rest"
+    SAFETY = "SAFTEY"
+
+
+class DrillBase(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
     name: str = Field(min_length=1, max_length=100)
     setup: str | None = Field(default=None, max_length=2000)
     attempts: int = Field(ge=1)
     max_points_per_attempt: int | None = Field(default=None, ge=1)  # None = unlimited
+    category: Category
 
 
-class DrillRead(BaseModel):
+class DrillCreate(DrillBase):
+    """What the client sends to create a drill."""
+
+
+class DrillRead(DrillBase):
+    """What the API returns to the client."""
+
     id: int
     created_at: datetime
     updated_at: datetime
-    name: str = Field(min_length=1, max_length=100)
-    setup: str | None = Field(default=None, max_length=2000)
-    attempts: int = Field(ge=1)
-    max_points_per_attempt: int | None = Field(default=None, ge=1)  # None = unlimited
     is_active: bool = True

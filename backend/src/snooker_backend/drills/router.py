@@ -14,6 +14,6 @@ def list_drills(repo: RepositoryDep) -> list[DrillRead]:
     return repo.list_all()
 
 
-@router.post("")
+@router.post("", status_code=201)
 def create_drill(drill: DrillCreate, repo: RepositoryDep) -> DrillRead:
     return repo.add(drill)
