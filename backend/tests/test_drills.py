@@ -72,3 +72,41 @@ def test_invalid_drill_is_rejected(client: TestClient, overrides: dict[str, obje
     response = client.post("/api/drills", json=_drill(**overrides))
 
     assert response.status_code == 422
+
+
+def test_get_drill_by_id(client: TestClient) -> None:
+    created = client.post("/api/drills", json=_drill()).json()
+    response = client.get(f"/api/drills/{created['id']}")
+
+    assert response.status_code == 200
+    assert response.json() == created
+
+
+def test_get_unkown_drill_returns_404(client: TestClient) -> None:
+    assert client.get("/api/drills/999").status_code == 404
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"name": "New Name"},
+        {"setup": "new setup"},
+        {"attempts": 5},
+        {"max_points_per_attempt": 10},
+        {"category": "safety"},
+    ],
+)
+def test_update_replaces_fields(client: TestClient, change: dict[str, object]) -> None:
+    created = client.post("/api/drills", json=_drill()).json()
+    assert all(created[key] != value for key, value in change.items())
+
+    response = client.put(f"/api/drills/{created['id']}", json=_drill(**change))
+
+    assert response.status_code == 200
+    body = response.json()
+    assert client.get(f"/api/drills/{created['id']}").json() == body
+    assert body == created | change | {"updated_at": body["updated_at"]}
+
+
+def test_update_unkown_drill_returns_404(client: TestClient) -> None:
+    assert client.put("/api/drills/999", json=_drill()).status_code == 404

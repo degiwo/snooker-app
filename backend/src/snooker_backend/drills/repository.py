@@ -7,6 +7,10 @@ class DuplicateDrillNameError(Exception):
     """A drill with the same name (case-insensitive) already exists."""
 
 
+class DrillNotFoundError(Exception):
+    """The requested drill cannot be found."""
+
+
 class DrillRepository:
     def __init__(self):
         self._data: dict[int, DrillRead] = {}
@@ -30,6 +34,24 @@ class DrillRepository:
 
     def list_all(self) -> list[DrillRead]:
         return list(self._data.values())
+
+    def get(self, id: int) -> DrillRead:
+        if id not in self._data:
+            raise DrillNotFoundError
+
+        return self._data[id]
+
+    def update(self, id: int, drill: DrillCreate) -> DrillRead:
+        existing = self.get(id).model_copy()
+        updated = DrillRead(
+            **drill.model_dump(),
+            id=existing.id,
+            is_active=existing.is_active,
+            created_at=existing.created_at,
+            updated_at=datetime.now(UTC),
+        )
+        self._data[id] = updated
+        return updated
 
     def _name_exists(self, name: str) -> bool:
         key = name.casefold()
