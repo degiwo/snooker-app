@@ -35,14 +35,18 @@ class DrillRepository:
     def list_all(self) -> list[DrillRead]:
         return list(self._data.values())
 
-    def get(self, id: int) -> DrillRead:
-        if id not in self._data:
+    def get(self, drill_id: int) -> DrillRead:
+        if drill_id not in self._data:
             raise DrillNotFoundError
 
-        return self._data[id]
+        return self._data[drill_id]
 
-    def update(self, id: int, drill: DrillCreate) -> DrillRead:
-        existing = self.get(id).model_copy()
+    def update(self, drill_id: int, drill: DrillCreate) -> DrillRead:
+        existing = self.get(drill_id)
+
+        if self._name_exists(drill.name) and existing.name != drill.name:
+            raise DuplicateDrillNameError(drill.name)
+
         updated = DrillRead(
             **drill.model_dump(),
             id=existing.id,
@@ -50,7 +54,7 @@ class DrillRepository:
             created_at=existing.created_at,
             updated_at=datetime.now(UTC),
         )
-        self._data[id] = updated
+        self._data[drill_id] = updated
         return updated
 
     def _name_exists(self, name: str) -> bool:

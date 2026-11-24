@@ -82,7 +82,7 @@ def test_get_drill_by_id(client: TestClient) -> None:
     assert response.json() == created
 
 
-def test_get_unkown_drill_returns_404(client: TestClient) -> None:
+def test_get_unknown_drill_returns_404(client: TestClient) -> None:
     assert client.get("/api/drills/999").status_code == 404
 
 
@@ -108,5 +108,14 @@ def test_update_replaces_fields(client: TestClient, change: dict[str, object]) -
     assert body == created | change | {"updated_at": body["updated_at"]}
 
 
-def test_update_unkown_drill_returns_404(client: TestClient) -> None:
+def test_update_unknown_drill_returns_404(client: TestClient) -> None:
     assert client.put("/api/drills/999", json=_drill()).status_code == 404
+
+
+def test_update_drill_with_existing_name_returns_409(client: TestClient) -> None:
+    first = client.post("/api/drills", json=_drill(name="first")).json()
+    second = client.post("/api/drills", json=_drill(name="second")).json()
+
+    response = client.put(f"/api/drills/{first['id']}", json=_drill(name=second["name"]))
+
+    assert response.status_code == 409

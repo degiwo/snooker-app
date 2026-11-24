@@ -47,3 +47,7 @@ def update_drill(drill_id: int, drill: DrillCreate, repo: RepositoryDep) -> Dril
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="A drill with this id does not exist."
         ) from None
+    except DuplicateDrillNameError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="A drill with this name already exists."
+        ) from None
