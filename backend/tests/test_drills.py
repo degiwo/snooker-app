@@ -119,3 +119,12 @@ def test_update_drill_with_existing_name_returns_409(client: TestClient) -> None
     response = client.put(f"/api/drills/{first['id']}", json=_drill(name=second["name"]))
 
     assert response.status_code == 409
+
+
+def test_update_can_change_case_of_own_name(client: TestClient) -> None:
+    created = client.post("/api/drills", json=_drill(name="mydrill")).json()
+
+    response = client.put(f"/api/drills/{created['id']}", json=_drill(name="MYDRILL"))
+
+    assert response.status_code == 200
+    assert response.json()["name"] == "MYDRILL"

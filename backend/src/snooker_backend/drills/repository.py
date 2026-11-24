@@ -44,7 +44,7 @@ class DrillRepository:
     def update(self, drill_id: int, drill: DrillCreate) -> DrillRead:
         existing = self.get(drill_id)
 
-        if self._name_exists(drill.name) and existing.name != drill.name:
+        if self._name_exists(drill.name, exclude_id=drill_id):
             raise DuplicateDrillNameError(drill.name)
 
         updated = DrillRead(
@@ -57,9 +57,9 @@ class DrillRepository:
         self._data[drill_id] = updated
         return updated
 
-    def _name_exists(self, name: str) -> bool:
+    def _name_exists(self, name: str, exclude_id: int | None = None) -> bool:
         key = name.casefold()
-        return any(d.name.casefold() == key for d in self._data.values())
+        return any(d.name.casefold() == key for d in self._data.values() if d.id != exclude_id)
 
 
 _repository = DrillRepository()
