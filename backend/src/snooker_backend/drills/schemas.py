@@ -37,4 +37,4 @@ class DrillRead(DrillBase):
     id: int
     created_at: datetime
     updated_at: datetime
-    is_active: bool = True
+    is_active: bool

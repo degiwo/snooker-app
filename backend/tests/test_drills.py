@@ -146,3 +146,25 @@ def test_reactivate_inactive_drill(client: TestClient) -> None:
 
     reactivated = client.put(f"/api/drills/{created['id']}", json=_drill_update(is_active=True))
     assert reactivated.json()["is_active"] is True
+
+
+def test_update_without_is_active_returns_422(client: TestClient) -> None:
+    created = client.post("/api/drills", json=_drill_create()).json()
+
+    response = client.put(f"/api/drills/{created['id']}", json=_drill_create())
+
+    assert response.status_code == 422
+
+
+def test_update_sets_omitted_optional_fields_to_null(client: TestClient) -> None:
+    created = client.post(
+        "/api/drills",
+        json=_drill_create(setup="Some setup instructions", max_points_per_attempt=8),
+    ).json()
+
+    response = client.put(f"/api/drills/{created['id']}", json=_drill_update())
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["setup"] is None
+    assert body["max_points_per_attempt"] is None
