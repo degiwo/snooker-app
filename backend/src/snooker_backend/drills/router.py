@@ -8,7 +8,7 @@ from snooker_backend.drills.repository import (
     DuplicateDrillNameError,
     get_drill_repository,
 )
-from snooker_backend.drills.schemas import DrillCreate, DrillRead
+from snooker_backend.drills.schemas import DrillCreate, DrillRead, DrillUpdate
 
 router = APIRouter(prefix="/drills", tags=["drills"])
 RepositoryDep = Annotated[DrillRepository, Depends(get_drill_repository)]
@@ -40,7 +40,7 @@ def get_drill(drill_id: int, repo: RepositoryDep) -> DrillRead:
 
 
 @router.put("/{drill_id}")
-def update_drill(drill_id: int, drill: DrillCreate, repo: RepositoryDep) -> DrillRead:
+def update_drill(drill_id: int, drill: DrillUpdate, repo: RepositoryDep) -> DrillRead:
     try:
         return repo.update(drill_id, drill)
     except DrillNotFoundError:

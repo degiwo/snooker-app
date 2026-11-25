@@ -1,6 +1,6 @@
 from datetime import UTC, datetime
 
-from snooker_backend.drills.schemas import DrillCreate, DrillRead
+from snooker_backend.drills.schemas import DrillCreate, DrillRead, DrillUpdate
 
 
 class DuplicateDrillNameError(Exception):
@@ -41,7 +41,7 @@ class DrillRepository:
 
         return self._data[drill_id]
 
-    def update(self, drill_id: int, drill: DrillCreate) -> DrillRead:
+    def update(self, drill_id: int, drill: DrillUpdate) -> DrillRead:
         existing = self.get(drill_id)
 
         if self._name_exists(drill.name, exclude_id=drill_id):
@@ -50,7 +50,6 @@ class DrillRepository:
         updated = DrillRead(
             **drill.model_dump(),
             id=existing.id,
-            is_active=existing.is_active,
             created_at=existing.created_at,
             updated_at=datetime.now(UTC),
         )

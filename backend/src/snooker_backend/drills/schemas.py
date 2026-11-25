@@ -25,6 +25,12 @@ class DrillCreate(DrillBase):
     """What the client sends to create a drill."""
 
 
+class DrillUpdate(DrillBase):
+    """What the client sends to update an existing drill."""
+
+    is_active: bool
+
+
 class DrillRead(DrillBase):
     """What the API returns to the client."""
 
